@@ -49,3 +49,13 @@ No build, no package manager, no linting toolchain — changes to `index.html` a
 ## Deployment
 
 Hosted on Netlify. Config in `.netlify/netlify.toml` publishes from the project root with no build command.
+
+## Automatisation active
+
+La commande `/loop` suivante a été lancée dans cette session :
+
+```
+/loop 5 minutes tu fais un push et commit si tu le juges nécessaire
+```
+
+Cela déclenche toutes les 5 minutes un commit + push automatique vers GitHub si des fichiers ont été modifiés.

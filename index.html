@@ -1,45 +1,33 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BE Energy | Dashboard Pro</title>
 
-    <!-- Bibliothèques autorisées via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-        /* Importation des polices */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-        /* Variables de thème (Clair Premium) */
         :root {
             --bg-color: #f1f5f9;
             --surface-color: rgba(255, 255, 255, 0.7);
             --border-color: rgba(15, 23, 42, 0.1);
             --border-hover: rgba(14, 165, 233, 0.4);
-
             --accent: #0ea5e9;
             --accent-glow: rgba(14, 165, 233, 0.15);
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-
             --text-main: #0f172a;
             --text-muted: #64748b;
-
             --font-sans: 'Inter', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        /* Reset & Base */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
         body {
             background-color: var(--bg-color);
@@ -60,12 +48,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1280px; margin: 0 auto; }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -75,18 +59,11 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+        .brand { display: flex; align-items: center; gap: 0.75rem; }
 
         .brand-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px;
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             border-radius: 10px;
@@ -94,36 +71,46 @@
             font-size: 1.25rem;
         }
 
-        .brand-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
+        .brand-title { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+        .brand-subtitle { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .header-right { display: flex; align-items: center; gap: 1.25rem; }
+
+        /* Language switcher */
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3px;
         }
 
-        .brand-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .live-clock {
-            text-align: right;
-        }
-
-        .clock-time {
+        .lang-btn {
+            background: none;
+            border: none;
+            border-radius: 5px;
+            padding: 0.25rem 0.55rem;
             font-family: var(--font-mono);
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        .clock-date {
-            font-size: 0.8rem;
+            font-size: 0.72rem;
+            font-weight: 600;
             color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            letter-spacing: 0.04em;
         }
 
-        /* Glassmorphism Cards */
+        .lang-btn:hover { color: var(--accent); }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .live-clock { text-align: right; }
+        .clock-time { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 500; }
+        .clock-date { font-size: 0.8rem; color: var(--text-muted); }
+
         .card {
             background: var(--surface-color);
             backdrop-filter: blur(12px);
@@ -131,15 +118,12 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .card:hover {
-            border-color: var(--border-hover);
-        }
+        .card:hover { border-color: var(--border-hover); }
 
-        /* Aide KPI */
         .kpi-help {
             font-size: 0.72rem;
             color: var(--text-muted);
@@ -152,7 +136,6 @@
             padding-top: 0.5rem;
         }
 
-        /* KPI Section */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -161,115 +144,58 @@
         }
 
         .kpi-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            display: flex; align-items: center; gap: 0.5rem;
             color: var(--text-muted);
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 0.8rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.05em;
             margin-bottom: 1rem;
         }
 
-        .kpi-value-container {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-        }
-
-        .kpi-value {
-            font-family: var(--font-mono);
-            font-size: 2.25rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .kpi-unit {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        .kpi-value-container { display: flex; align-items: baseline; gap: 0.5rem; }
+        .kpi-value { font-family: var(--font-mono); font-size: 2.25rem; font-weight: 700; line-height: 1; }
+        .kpi-unit { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; }
 
         .text-accent { color: var(--accent); }
         .text-success { color: var(--success); }
         .text-danger { color: var(--danger); }
         .text-warning { color: var(--warning); }
 
-        /* Chart Section */
-        .chart-section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-        }
+        .chart-section { margin-bottom: 2rem; padding: 1.5rem; }
 
         .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 1rem;
         }
 
         .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 1rem; font-weight: 600; color: var(--text-main);
+            display: flex; align-items: center; gap: 0.5rem;
         }
 
-        .chart-container {
-            height: 400px;
-            position: relative;
-            width: 100%;
-        }
+        .chart-container { height: 400px; position: relative; width: 100%; }
 
-        /* Strips */
         .strip-label {
-            font-size: 0.7rem;
-            font-family: var(--font-mono);
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
+            font-size: 0.7rem; font-family: var(--font-mono);
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 4px;
         }
 
-        .heatmap-strip {
-            display: flex;
-            gap: 3px;
-            margin-bottom: 4px;
-            overflow: hidden;
-        }
+        .heatmap-strip { display: flex; gap: 3px; margin-bottom: 4px; overflow: hidden; }
+        .solar-strip { display: flex; gap: 3px; margin-bottom: 2rem; overflow: hidden; }
 
-        .solar-strip {
-            display: flex;
-            gap: 3px;
-            margin-bottom: 2rem;
-            overflow: hidden;
-        }
-
-        /* Météo */
         .weather-bar {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
+            display: flex; align-items: center; gap: 1.5rem;
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 0.6rem 1.25rem;
             margin-bottom: 2rem;
-            font-size: 0.82rem;
-            color: var(--text-muted);
+            font-size: 0.82rem; color: var(--text-muted);
             flex-wrap: wrap;
         }
 
         .weather-bar strong { color: var(--text-main); }
-
-        .weather-item {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
+        .weather-item { display: flex; align-items: center; gap: 0.35rem; }
 
         .heatmap-cell.selected {
             border-color: #f59e0b !important;
@@ -278,52 +204,25 @@
         }
 
         .heatmap-cell {
-            flex: 1;
-            height: 54px;
-            border-radius: 4px;
+            flex: 1; height: 54px; border-radius: 4px;
             border: 1px solid transparent;
             transition: transform 0.1s, box-shadow 0.1s;
             cursor: default;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            font-family: var(--font-mono);
-            color: rgba(0,0,0,0.55);
-            padding: 3px 1px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 2px; font-family: var(--font-mono);
+            color: rgba(0,0,0,0.55); padding: 3px 1px;
         }
 
-        .cell-hour {
-            font-size: 0.6rem;
-            font-weight: 400;
-            opacity: 0.7;
-        }
+        .cell-hour { font-size: 0.6rem; font-weight: 400; opacity: 0.7; }
+        .cell-val { font-size: 0.7rem; font-weight: 700; line-height: 1; }
 
-        .cell-val {
-            font-size: 0.7rem;
-            font-weight: 700;
-            line-height: 1;
-        }
+        .heatmap-cell:hover { transform: scaleY(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .heatmap-cell.current-hour { border-color: var(--accent); color: rgba(0,0,0,0.8); }
 
-        .heatmap-cell:hover {
-            transform: scaleY(1.15);
-            z-index: 2;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .heatmap-cell.current-hour {
-            border-color: var(--accent);
-            color: rgba(0,0,0,0.8);
-        }
-
-        /* Day selector */
         .day-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.75rem; margin-bottom: 2rem;
         }
 
         .day-btn {
@@ -332,13 +231,10 @@
             border-radius: 8px;
             padding: 0.5rem 0.85rem;
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-size: 0.8rem; color: var(--text-muted);
             cursor: pointer;
             transition: border-color 0.2s, color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
+            display: flex; align-items: center; gap: 0.35rem;
         }
 
         .day-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -347,17 +243,12 @@
         .day-btn.today-btn {
             background: var(--accent-glow);
             border-color: rgba(14,165,233,0.35);
-            color: var(--accent);
-            font-weight: 600;
+            color: var(--accent); font-weight: 600;
         }
 
         .day-label {
-            font-family: var(--font-mono);
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-main);
-            min-width: 220px;
-            text-align: center;
+            font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600;
+            color: var(--text-main); min-width: 220px; text-align: center;
         }
 
         #date-picker {
@@ -365,148 +256,246 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 0.5rem 0.75rem;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: border-color 0.2s;
-            outline: none;
+            font-family: var(--font-mono); font-size: 0.85rem;
+            color: var(--text-main); cursor: pointer;
+            transition: border-color 0.2s; outline: none;
         }
 
-        #date-picker:focus, #date-picker:hover {
-            border-color: var(--accent);
-        }
+        #date-picker:focus, #date-picker:hover { border-color: var(--accent); }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .spin { animation: spin 1s linear infinite; display: inline-block; }
 
-        /* Responsive */
         @media (max-width: 768px) {
             header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .header-right { width: 100%; justify-content: space-between; }
             .live-clock { text-align: left; }
             .kpi-grid { grid-template-columns: 1fr 1fr; }
             .chart-container { height: 300px; }
         }
 
-        @media (max-width: 480px) {
-            .kpi-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 480px) { .kpi-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Header -->
     <header>
         <div class="brand">
-            <div class="brand-icon">
-                <i class="bi bi-lightning-charge-fill"></i>
-            </div>
+            <div class="brand-icon"><i class="bi bi-lightning-charge-fill"></i></div>
             <div>
                 <div class="brand-title">BELGIUM E-SPOT</div>
-                <div class="brand-subtitle">Marché Day-Ahead • Pro Dashboard</div>
+                <div class="brand-subtitle" data-i18n="subtitle">Day-Ahead Market • Pro Dashboard</div>
             </div>
         </div>
-        <div class="live-clock">
-            <div id="clock-time" class="clock-time">--:--:--</div>
-            <div id="clock-date" class="clock-date">--</div>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button class="lang-btn active" id="lang-en" onclick="setLang('en')">EN</button>
+                <button class="lang-btn" id="lang-fr" onclick="setLang('fr')">FR</button>
+            </div>
+            <div class="live-clock">
+                <div id="clock-time" class="clock-time">--:--:--</div>
+                <div id="clock-date" class="clock-date">--</div>
+            </div>
         </div>
     </header>
 
-    <!-- Météo -->
+    <!-- Weather bar -->
     <div class="weather-bar" id="weather-bar">
         <span class="weather-item"><i class="bi bi-geo-alt"></i> Louvain-la-Neuve</span>
         <span id="weather-content" style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-            <span style="color:var(--text-muted)">Chargement météo...</span>
+            <span id="weather-loading" style="color:var(--text-muted)" data-i18n="weatherLoading">Loading weather...</span>
         </span>
     </div>
 
-    <div id="data-section">
-    <!-- KPIs -->
-    <div class="kpi-grid">
-        <div class="card">
-            <div class="kpi-header"><i class="bi bi-broadcast text-accent"></i> Prix Actuel</div>
-            <div class="kpi-value-container">
-                <span id="kpi-current" class="kpi-value text-accent">--.--</span>
-                <span class="kpi-unit">c€/kWh</span>
-            </div>
-            <p class="kpi-help">Prix EPEX SPOT Day-Ahead pour le quart d'heure en cours. Source : energy-charts.info.</p>
-        </div>
-        <div class="card">
-            <div class="kpi-header"><i class="bi bi-calculator text-warning"></i> Moyenne Pondérée</div>
-            <div class="kpi-value-container">
-                <span id="kpi-avg" class="kpi-value">--.--</span>
-                <span class="kpi-unit">c€/kWh</span>
-            </div>
-            <p class="kpi-help">Moyenne des 24 prix horaires de la journée. Permet de comparer le coût global du jour.</p>
-        </div>
-        <div class="card">
-            <div class="kpi-header"><i class="bi bi-arrow-down-right-circle text-success"></i> Creux Journalier</div>
-            <div class="kpi-value-container">
-                <span id="kpi-min" class="kpi-value text-success">--.--</span>
-                <span class="kpi-unit">c€/kWh</span>
-            </div>
-            <p class="kpi-help">Heure la moins chère. Idéal pour recharger un véhicule électrique ou faire tourner le lave-linge.</p>
-        </div>
-        <div class="card">
-            <div class="kpi-header"><i class="bi bi-arrow-up-right-circle text-danger"></i> Pic Journalier</div>
-            <div class="kpi-value-container">
-                <span id="kpi-max" class="kpi-value text-danger">--.--</span>
-                <span class="kpi-unit">c€/kWh</span>
-            </div>
-            <p class="kpi-help">Heure la plus chère. À éviter pour les gros appareils si vous avez un contrat à prix variable.</p>
-        </div>
-    </div>
-
-    <!-- Sélecteur de jour -->
+    <!-- Day selector -->
     <div class="day-selector">
         <button class="day-btn" id="btn-prev" onclick="changeDay(-1)">
             <i class="bi bi-chevron-left"></i>
         </button>
         <input type="date" id="date-picker" onchange="pickDate(this.value)" />
         <button class="day-btn today-btn" id="btn-today" onclick="goToToday()">
-            <i class="bi bi-calendar-check"></i> Aujourd'hui
+            <i class="bi bi-calendar-check"></i> <span data-i18n="today">Today</span>
         </button>
         <button class="day-btn" id="btn-next" onclick="changeDay(1)">
             <i class="bi bi-chevron-right"></i>
         </button>
     </div>
 
-    <!-- Graphique Principal -->
-    <div class="card chart-section">
-        <div class="chart-header">
-            <div class="section-title">
-                <i class="bi bi-graph-up"></i> Courbe de profil (96 Quarts d'heure)
+    <div id="data-section">
+        <div class="kpi-grid">
+            <div class="card">
+                <div class="kpi-header"><i class="bi bi-broadcast text-accent"></i> <span data-i18n="kpiCurrent">Current Price</span></div>
+                <div class="kpi-value-container">
+                    <span id="kpi-current" class="kpi-value text-accent">--.--</span>
+                    <span class="kpi-unit">c€/kWh</span>
+                </div>
+                <p class="kpi-help" data-i18n="helpCurrent">EPEX SPOT Day-Ahead price for the current quarter-hour. Source: energy-charts.info.</p>
             </div>
-            <div class="kpi-unit" id="chart-status">Live</div>
-        </div>
-        <div class="chart-container">
-            <canvas id="mainChart"></canvas>
+            <div class="card">
+                <div class="kpi-header"><i class="bi bi-calculator text-warning"></i> <span data-i18n="kpiAvg">Weighted Average</span></div>
+                <div class="kpi-value-container">
+                    <span id="kpi-avg" class="kpi-value">--.--</span>
+                    <span class="kpi-unit">c€/kWh</span>
+                </div>
+                <p class="kpi-help" data-i18n="helpAvg">Average of the 24 hourly prices for the day. Allows comparing the overall cost of the day.</p>
+            </div>
+            <div class="card">
+                <div class="kpi-header"><i class="bi bi-arrow-down-right-circle text-success"></i> <span data-i18n="kpiMin">Daily Low</span></div>
+                <div class="kpi-value-container">
+                    <span id="kpi-min" class="kpi-value text-success">--.--</span>
+                    <span class="kpi-unit">c€/kWh</span>
+                </div>
+                <p class="kpi-help" data-i18n="helpMin">Cheapest hour. Ideal for charging an EV or running the washing machine.</p>
+            </div>
+            <div class="card">
+                <div class="kpi-header"><i class="bi bi-arrow-up-right-circle text-danger"></i> <span data-i18n="kpiMax">Daily Peak</span></div>
+                <div class="kpi-value-container">
+                    <span id="kpi-max" class="kpi-value text-danger">--.--</span>
+                    <span class="kpi-unit">c€/kWh</span>
+                </div>
+                <p class="kpi-help" data-i18n="helpMax">Most expensive hour. Avoid heavy appliances if you have a variable-rate contract.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Strip prix -->
-    <div class="strip-label"><i class="bi bi-currency-euro"></i> Prix Day-Ahead (c€/kWh)</div>
-    <div class="heatmap-strip" id="heatmap-container"></div>
-    </div><!-- /data-section -->
+    <!-- Chart (always visible) -->
+    <div class="card chart-section">
+        <div class="chart-header">
+            <div class="section-title">
+                <i class="bi bi-graph-up"></i> <span data-i18n="chartTitle">Profile Curve (96 Quarter-hours)</span>
+            </div>
+            <div class="kpi-unit" id="chart-status">Live</div>
+        </div>
+        <div class="chart-container" style="position:relative;">
+            <canvas id="mainChart"></canvas>
+            <div id="chart-nodata" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;color:var(--text-muted);font-size:0.9rem;">
+                <i class="bi bi-clock-history" style="font-size:2rem;"></i>
+                <span data-i18n="noDataLine1">Prices not yet published</span>
+                <span style="font-size:0.75rem;" data-i18n="noDataLine2">Available after ~13:00</span>
+            </div>
+        </div>
+    </div>
 
-    <!-- Strip solaire (toujours visible si données dispo) -->
-    <div class="strip-label"><i class="bi bi-sun"></i> Ensoleillement — Louvain-la-Neuve (W/m²)</div>
+    <!-- Price strip -->
+    <div id="price-strip-section">
+        <div class="strip-label"><i class="bi bi-currency-euro"></i> <span data-i18n="stripPrice">Day-Ahead Price (c€/kWh)</span></div>
+        <div class="heatmap-strip" id="heatmap-container"></div>
+    </div>
+
+    <!-- Solar strip (always visible) -->
+    <div class="strip-label"><i class="bi bi-sun"></i> <span data-i18n="stripSolar">Solar Irradiance — Louvain-la-Neuve (W/m²)</span></div>
     <div class="solar-strip" id="solar-container"></div>
 </div>
 
 <script>
-    /**
-     * DÉFINITION ET GESTION DES DONNÉES
-     */
+    // ─── Translations ──────────────────────────────────────────────────────────
+    let currentLang = 'en';
 
+    const LANG = {
+        en: {
+            subtitle: 'Day-Ahead Market • Pro Dashboard',
+            weatherLoading: 'Loading weather...',
+            today: 'Today',
+            kpiCurrent: 'Current Price',
+            kpiAvg: 'Weighted Average',
+            kpiMin: 'Daily Low',
+            kpiMax: 'Daily Peak',
+            helpCurrent: 'EPEX SPOT Day-Ahead price for the current quarter-hour. Source: energy-charts.info.',
+            helpAvg: 'Average of the 24 hourly prices for the day. Allows comparing the overall cost of the day.',
+            helpMin: 'Cheapest hour. Ideal for charging an EV or running the washing machine.',
+            helpMax: 'Most expensive hour. Avoid heavy appliances if you have a variable-rate contract.',
+            chartTitle: 'Profile Curve (96 Quarter-hours)',
+            noDataLine1: 'Prices not yet published',
+            noDataLine2: 'Available after ~13:00',
+            stripPrice: 'Day-Ahead Price (c€/kWh)',
+            stripSolar: 'Solar Irradiance — Louvain-la-Neuve (W/m²)',
+            statusConnecting: 'Connecting to API...',
+            statusLive: 'API Live',
+            statusUnavailable: 'Data unavailable',
+            datasetPrice: 'Price (c€/kWh)',
+            datasetSolar: 'Solar Irradiance (W/m²)',
+            clockLocale: 'en-GB',
+            wmo: {
+                0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast',
+                45:'Fog', 48:'Rime fog',
+                51:'Light drizzle', 53:'Drizzle', 55:'Dense drizzle',
+                61:'Light rain', 63:'Rain', 65:'Heavy rain',
+                71:'Light snow', 73:'Snow', 75:'Heavy snow',
+                80:'Light showers', 81:'Showers', 82:'Heavy showers',
+                95:'Thunderstorm', 96:'Thunderstorm with hail', 99:'Violent thunderstorm'
+            }
+        },
+        fr: {
+            subtitle: 'Marché Day-Ahead • Pro Dashboard',
+            weatherLoading: 'Chargement météo...',
+            today: "Aujourd'hui",
+            kpiCurrent: 'Prix Actuel',
+            kpiAvg: 'Moyenne Pondérée',
+            kpiMin: 'Creux Journalier',
+            kpiMax: 'Pic Journalier',
+            helpCurrent: "Prix EPEX SPOT Day-Ahead pour le quart d'heure en cours. Source : energy-charts.info.",
+            helpAvg: "Moyenne des 24 prix horaires de la journée. Permet de comparer le coût global du jour.",
+            helpMin: "Heure la moins chère. Idéal pour recharger un véhicule électrique ou faire tourner le lave-linge.",
+            helpMax: "Heure la plus chère. À éviter pour les gros appareils si vous avez un contrat à prix variable.",
+            chartTitle: "Courbe de profil (96 Quarts d'heure)",
+            noDataLine1: 'Prix non encore publiés',
+            noDataLine2: 'Disponibles après ~13h00',
+            stripPrice: 'Prix Day-Ahead (c€/kWh)',
+            stripSolar: 'Ensoleillement — Louvain-la-Neuve (W/m²)',
+            statusConnecting: 'Connexion API...',
+            statusLive: 'API Live',
+            statusUnavailable: 'Données indisponibles',
+            datasetPrice: 'Prix (c€/kWh)',
+            datasetSolar: 'Ensoleillement (W/m²)',
+            clockLocale: 'fr-BE',
+            wmo: {
+                0:'Ciel dégagé', 1:'Principalement dégagé', 2:'Partiellement nuageux', 3:'Couvert',
+                45:'Brouillard', 48:'Brouillard givrant',
+                51:'Bruine légère', 53:'Bruine', 55:'Bruine dense',
+                61:'Pluie légère', 63:'Pluie', 65:'Pluie forte',
+                71:'Neige légère', 73:'Neige', 75:'Neige forte',
+                80:'Averses légères', 81:'Averses', 82:'Averses fortes',
+                95:'Orage', 96:'Orage avec grêle', 99:'Orage violent'
+            }
+        }
+    };
+
+    function t(key) { return LANG[currentLang][key] || LANG.en[key] || key; }
+
+    function applyTranslations() {
+        document.documentElement.lang = currentLang;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            el.textContent = t(key);
+        });
+        document.getElementById('lang-en').classList.toggle('active', currentLang === 'en');
+        document.getElementById('lang-fr').classList.toggle('active', currentLang === 'fr');
+    }
+
+    function setLang(lang) {
+        currentLang = lang;
+        applyTranslations();
+        updateClock();
+        // Re-render weather if already loaded
+        if (lastWeatherData) renderWeatherContent(lastWeatherData);
+        // Re-render chart to update dataset labels
+        if (chartInstance) {
+            const validData = currentPrices.filter(d => d !== null && !isNaN(d));
+            renderChart(validData.length === 0 ? [] : currentPrices, getCurrentQuarterIndex());
+        }
+    }
+
+    // ─── State ─────────────────────────────────────────────────────────────────
     let chartInstance = null;
     let currentPrices = [];
     let hoveredIdx = null;
     let selectedIdx = null;
     let solarData = new Array(24).fill(0);
-    let viewDate = new Date(); // date affichée (par défaut aujourd'hui)
+    let viewDate = new Date();
+    let lastWeatherData = null;
 
+    // ─── Date helpers ──────────────────────────────────────────────────────────
     function toDateStr(d) {
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
@@ -528,11 +517,9 @@
 
     function pickDate(val) {
         if (!val) return;
-        // Construire la date en heure locale pour éviter le décalage UTC
         const [y, m, d] = val.split('-').map(Number);
         viewDate = new Date(y, m - 1, d);
-        selectedIdx = null;
-        hoveredIdx = null;
+        selectedIdx = null; hoveredIdx = null;
         updateDaySelector();
         loadDayData();
     }
@@ -540,16 +527,14 @@
     function changeDay(delta) {
         viewDate = new Date(viewDate);
         viewDate.setDate(viewDate.getDate() + delta);
-        selectedIdx = null;
-        hoveredIdx = null;
+        selectedIdx = null; hoveredIdx = null;
         updateDaySelector();
         loadDayData();
     }
 
     function goToToday() {
         viewDate = new Date();
-        selectedIdx = null;
-        hoveredIdx = null;
+        selectedIdx = null; hoveredIdx = null;
         updateDaySelector();
         loadDayData();
     }
@@ -558,24 +543,32 @@
         await Promise.all([fetchLivePrices(), fetchSolarData(), fetchWeather()]);
     }
 
+    // ─── Weather ───────────────────────────────────────────────────────────────
     const WMO_ICONS = {
-        0:'bi-sun',1:'bi-sun',2:'bi-cloud-sun',3:'bi-clouds',
-        45:'bi-cloud-fog2',48:'bi-cloud-fog2',
-        51:'bi-cloud-drizzle',53:'bi-cloud-drizzle',55:'bi-cloud-drizzle',
-        61:'bi-cloud-rain',63:'bi-cloud-rain',65:'bi-cloud-rain-heavy',
-        71:'bi-cloud-snow',73:'bi-cloud-snow',75:'bi-cloud-snow',
-        80:'bi-cloud-rain',81:'bi-cloud-rain',82:'bi-cloud-rain-heavy',
-        95:'bi-cloud-lightning',96:'bi-cloud-lightning-rain',99:'bi-cloud-lightning-rain'
+        0:'bi-sun', 1:'bi-sun', 2:'bi-cloud-sun', 3:'bi-clouds',
+        45:'bi-cloud-fog2', 48:'bi-cloud-fog2',
+        51:'bi-cloud-drizzle', 53:'bi-cloud-drizzle', 55:'bi-cloud-drizzle',
+        61:'bi-cloud-rain', 63:'bi-cloud-rain', 65:'bi-cloud-rain-heavy',
+        71:'bi-cloud-snow', 73:'bi-cloud-snow', 75:'bi-cloud-snow',
+        80:'bi-cloud-rain', 81:'bi-cloud-rain', 82:'bi-cloud-rain-heavy',
+        95:'bi-cloud-lightning', 96:'bi-cloud-lightning-rain', 99:'bi-cloud-lightning-rain'
     };
-    const WMO_LABELS = {
-        0:'Ciel dégagé',1:'Principalement dégagé',2:'Partiellement nuageux',3:'Couvert',
-        45:'Brouillard',48:'Brouillard givrant',
-        51:'Bruine légère',53:'Bruine',55:'Bruine dense',
-        61:'Pluie légère',63:'Pluie',65:'Pluie forte',
-        71:'Neige légère',73:'Neige',75:'Neige forte',
-        80:'Averses légères',81:'Averses',82:'Averses fortes',
-        95:'Orage',96:'Orage avec grêle',99:'Orage violent'
-    };
+
+    function renderWeatherContent(d) {
+        const code = d.weathercode?.[0] ?? 0;
+        const icon = WMO_ICONS[code] || 'bi-cloud';
+        const label = LANG[currentLang].wmo[code] || '';
+        const tmax = d.temperature_2m_max?.[0]?.toFixed(1) ?? '--';
+        const tmin = d.temperature_2m_min?.[0]?.toFixed(1) ?? '--';
+        const precip = d.precipitation_sum?.[0]?.toFixed(1) ?? '--';
+        const wind = d.windspeed_10m_max?.[0]?.toFixed(0) ?? '--';
+        document.getElementById('weather-content').innerHTML = `
+            <span class="weather-item"><i class="bi ${icon}" style="font-size:1rem"></i> <strong>${label}</strong></span>
+            <span class="weather-item"><i class="bi bi-thermometer-half"></i> <strong>${tmin}° / ${tmax}°C</strong></span>
+            <span class="weather-item"><i class="bi bi-droplet"></i> <strong>${precip} mm</strong></span>
+            <span class="weather-item"><i class="bi bi-wind"></i> <strong>${wind} km/h</strong></span>
+        `;
+    }
 
     async function fetchWeather() {
         try {
@@ -584,28 +577,14 @@
             const resp = await fetch(url);
             if (!resp.ok) return;
             const json = await resp.json();
-            const d = json.daily;
-            const code = d.weathercode?.[0] ?? 0;
-            const icon = WMO_ICONS[code] || 'bi-cloud';
-            const label = WMO_LABELS[code] || '';
-            const tmax = d.temperature_2m_max?.[0]?.toFixed(1) ?? '--';
-            const tmin = d.temperature_2m_min?.[0]?.toFixed(1) ?? '--';
-            const precip = d.precipitation_sum?.[0]?.toFixed(1) ?? '--';
-            const wind = d.windspeed_10m_max?.[0]?.toFixed(0) ?? '--';
-            document.getElementById('weather-content').innerHTML = `
-                <span class="weather-item"><i class="bi ${icon}" style="font-size:1rem"></i> <strong>${label}</strong></span>
-                <span class="weather-item"><i class="bi bi-thermometer-half"></i> <strong>${tmin}° / ${tmax}°C</strong></span>
-                <span class="weather-item"><i class="bi bi-droplet"></i> <strong>${precip} mm</strong></span>
-                <span class="weather-item"><i class="bi bi-wind"></i> <strong>${wind} km/h</strong></span>
-            `;
+            lastWeatherData = json.daily;
+            renderWeatherContent(lastWeatherData);
         } catch (e) {
             console.warn('Weather fetch failed:', e);
         }
     }
 
-    /**
-     * ENSOLEILLEMENT — Open-Meteo (LLN : 50.67°N, 4.61°E)
-     */
+    // ─── Solar ─────────────────────────────────────────────────────────────────
     async function fetchSolarData() {
         try {
             const dateStr = toDateStr(viewDate);
@@ -641,36 +620,21 @@
                 ? `<span class="cell-hour">${h.toString().padStart(2,'0')}h</span><span class="cell-val">${Math.round(val)}</span>`
                 : `<span class="cell-hour">${h.toString().padStart(2,'0')}h</span>`;
             div.style.cursor = 'pointer';
-            div.addEventListener('mouseenter', () => {
-                hoveredIdx = h * 4;
-                if (chartInstance) chartInstance.draw();
-            });
-            div.addEventListener('mouseleave', () => {
-                hoveredIdx = selectedIdx;
-                if (chartInstance) chartInstance.draw();
-            });
-            div.addEventListener('click', () => {
-                selectedIdx = h * 4;
-                hoveredIdx = selectedIdx;
-                renderSolarStrip();
-                if (chartInstance) chartInstance.draw();
-            });
+            div.addEventListener('mouseenter', () => { hoveredIdx = h * 4; if (chartInstance) chartInstance.draw(); });
+            div.addEventListener('mouseleave', () => { hoveredIdx = selectedIdx; if (chartInstance) chartInstance.draw(); });
+            div.addEventListener('click', () => { selectedIdx = h * 4; hoveredIdx = selectedIdx; renderSolarStrip(); if (chartInstance) chartInstance.draw(); });
             container.appendChild(div);
         });
     }
 
-    /**
-     * APPEL API EN DIRECT (ENERGY-CHARTS)
-     */
+    // ─── Prices ────────────────────────────────────────────────────────────────
     async function fetchLivePrices() {
         const statusEl = document.getElementById('chart-status');
-        statusEl.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Connexion API...';
+        statusEl.innerHTML = `<i class="bi bi-arrow-repeat spin"></i> ${t('statusConnecting')}`;
 
         try {
             const dateStr = toDateStr(viewDate);
-
             const targetUrl = `https://api.energy-charts.info/price?bzn=BE&start=${dateStr}&end=${dateStr}`;
-
             const fetchUrls = [
                 targetUrl,
                 `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
@@ -678,60 +642,42 @@
             ];
 
             let data = null;
-            let fetchSuccess = false;
-
             for (const url of fetchUrls) {
                 try {
                     const response = await fetch(url);
-                    if (response.ok) {
-                        data = await response.json();
-                        fetchSuccess = true;
-                        break;
-                    }
-                } catch (e) {
-                    console.warn(`Fetch échoué pour ${url}, tentative suivante...`);
-                }
+                    if (response.ok) { data = await response.json(); break; }
+                } catch (e) { console.warn(`Fetch failed for ${url}`); }
             }
 
-            if (!fetchSuccess || !data) {
-                throw new Error("Erreur serveur API ou Proxys injoignables");
-            }
+            if (!data) throw new Error('All API endpoints unreachable');
 
-            if (data && data.price && data.price.length >= 24) {
-                const hourlyPrices = data.price.slice(0, 24);
+            if (data.price && data.price.length >= 24) {
                 const quarterPrices = [];
-
-                hourlyPrices.forEach(priceEurMwh => {
-                    const priceCentsKwh = parseFloat((priceEurMwh / 10).toFixed(2));
-                    quarterPrices.push(priceCentsKwh, priceCentsKwh, priceCentsKwh, priceCentsKwh);
+                data.price.slice(0, 24).forEach(p => {
+                    const v = parseFloat((p / 10).toFixed(2));
+                    quarterPrices.push(v, v, v, v);
                 });
-
                 currentPrices = quarterPrices;
-
-                statusEl.innerHTML = '<i class="bi bi-cloud-check text-success"></i> <span style="color: var(--success)">API Live</span>';
+                statusEl.innerHTML = `<i class="bi bi-cloud-check text-success"></i> <span style="color:var(--success)">${t('statusLive')}</span>`;
                 refreshUI();
             } else {
-                throw new Error("Format de réponse inattendu ou données futures indisponibles");
+                throw new Error('Unexpected response format or future data unavailable');
             }
         } catch (error) {
-            console.error("Erreur API complète:", error);
-            statusEl.innerHTML = '<i class="bi bi-exclamation-triangle"></i> <span style="color: var(--danger)">Données indisponibles</span>';
+            console.error('API error:', error);
+            statusEl.innerHTML = `<i class="bi bi-exclamation-triangle"></i> <span style="color:var(--danger)">${t('statusUnavailable')}</span>`;
             currentPrices = [];
             refreshUI();
         }
     }
 
-    /**
-     * GESTION DE L'HORLOGE
-     */
+    // ─── Clock ─────────────────────────────────────────────────────────────────
     function updateClock() {
         const now = new Date();
-        document.getElementById('clock-time').textContent = now.toLocaleTimeString('fr-BE', { hour: '2-digit', minute: '2-digit', second:'2-digit' });
-        document.getElementById('clock-date').textContent = now.toLocaleDateString('fr-BE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-        if (now.getSeconds() === 0 && now.getMinutes() % 15 === 0) {
-            refreshUI();
-        }
+        const locale = LANG[currentLang].clockLocale;
+        document.getElementById('clock-time').textContent = now.toLocaleTimeString(locale, { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        document.getElementById('clock-date').textContent = now.toLocaleDateString(locale, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+        if (now.getSeconds() === 0 && now.getMinutes() % 15 === 0) refreshUI();
     }
 
     function getCurrentQuarterIndex() {
@@ -739,18 +685,12 @@
         return (now.getHours() * 4) + Math.floor(now.getMinutes() / 15);
     }
 
-    /**
-     * MOTEUR DE RENDU UI
-     */
+    // ─── UI rendering ──────────────────────────────────────────────────────────
     function getHeatmapColor(val, min, max) {
         if (val === null || val === undefined) return 'transparent';
-
         if (val < 0) return 'rgba(14, 165, 233, 0.4)';
-
         const range = max - Math.max(0, min);
-        const normalizedVal = Math.max(0, val);
-        const ratio = (normalizedVal - Math.max(0, min)) / (range || 1);
-
+        const ratio = (Math.max(0, val) - Math.max(0, min)) / (range || 1);
         if (ratio < 0.33) return `rgba(16, 185, 129, ${0.15 + ratio * 0.5})`;
         if (ratio < 0.66) return `rgba(245, 158, 11, ${0.15 + ratio * 0.5})`;
         return `rgba(239, 68, 68, ${0.15 + ratio * 0.5})`;
@@ -759,15 +699,15 @@
     function refreshUI() {
         const data = currentPrices;
         const currentIdx = getCurrentQuarterIndex();
-        const dataSection = document.getElementById('data-section');
-
         const validData = data.filter(d => d !== null && !isNaN(d));
-        if (validData.length === 0) {
-            dataSection.style.display = 'none';
-            if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-            return;
-        }
-        dataSection.style.display = '';
+        const noData = validData.length === 0;
+
+        document.getElementById('data-section').style.display = noData ? 'none' : '';
+        document.getElementById('price-strip-section').style.display = noData ? 'none' : '';
+        document.getElementById('chart-nodata').style.display = noData ? 'flex' : 'none';
+
+        renderChart(noData ? [] : data, currentIdx);
+        if (noData) return;
 
         const current = data[currentIdx] !== null ? data[currentIdx] : validData[0];
         const min = Math.min(...validData);
@@ -779,18 +719,12 @@
         document.getElementById('kpi-min').textContent = min.toFixed(2);
         document.getElementById('kpi-max').textContent = max.toFixed(2);
 
-        // Heatmap strip : une case par heure
         const heatmapContainer = document.getElementById('heatmap-container');
         heatmapContainer.innerHTML = '';
         const currentHour = new Date().getHours();
 
         for (let h = 0; h < 24; h++) {
-            const q1 = data[h * 4] || 0;
-            const q2 = data[h * 4 + 1] || 0;
-            const q3 = data[h * 4 + 2] || 0;
-            const q4 = data[h * 4 + 3] || 0;
-            const hourlyAvg = (q1 + q2 + q3 + q4) / 4;
-
+            const hourlyAvg = (data[h*4]||0 + data[h*4+1]||0 + data[h*4+2]||0 + data[h*4+3]||0) / 4;
             const div = document.createElement('div');
             const selectedHourP = selectedIdx !== null ? Math.floor(selectedIdx / 4) : null;
             let cls = 'heatmap-cell';
@@ -801,25 +735,11 @@
             div.title = `${h.toString().padStart(2,'0')}:00 — ${hourlyAvg.toFixed(2)} c€/kWh`;
             div.innerHTML = `<span class="cell-hour">${h.toString().padStart(2,'0')}h</span><span class="cell-val">${hourlyAvg.toFixed(1)}</span>`;
             div.style.cursor = 'pointer';
-            div.addEventListener('mouseenter', () => {
-                hoveredIdx = h * 4;
-                if (chartInstance) chartInstance.draw();
-            });
-            div.addEventListener('mouseleave', () => {
-                hoveredIdx = selectedIdx;
-                if (chartInstance) chartInstance.draw();
-            });
-            div.addEventListener('click', () => {
-                selectedIdx = h * 4;
-                hoveredIdx = selectedIdx;
-                refreshUI();
-                renderSolarStrip();
-                if (chartInstance) chartInstance.draw();
-            });
+            div.addEventListener('mouseenter', () => { hoveredIdx = h * 4; if (chartInstance) chartInstance.draw(); });
+            div.addEventListener('mouseleave', () => { hoveredIdx = selectedIdx; if (chartInstance) chartInstance.draw(); });
+            div.addEventListener('click', () => { selectedIdx = h * 4; hoveredIdx = selectedIdx; refreshUI(); renderSolarStrip(); if (chartInstance) chartInstance.draw(); });
             heatmapContainer.appendChild(div);
         }
-
-        renderChart(data, currentIdx);
     }
 
     function renderChart(data, currentIdx) {
@@ -836,56 +756,50 @@
             return `${h}:${m}`;
         });
 
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
+        if (chartInstance) chartInstance.destroy();
 
-        // Étendre les 24 valeurs solaires en 96 QH
         const solarQH = Array.from({length: 96}, (_, i) => solarData[Math.floor(i / 4)] ?? 0);
+        const hasPrices = data.length > 0;
+        const datasets = [];
+
+        if (hasPrices) datasets.push({
+            label: t('datasetPrice'),
+            data: data,
+            borderColor: '#0ea5e9',
+            backgroundColor: gradientFill,
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: '#ffffff',
+            pointHoverBorderColor: '#0ea5e9',
+            pointHoverBorderWidth: 2,
+            yAxisID: 'y'
+        });
+
+        datasets.push({
+            label: t('datasetSolar'),
+            data: solarQH,
+            borderColor: 'rgba(251, 191, 36, 0.8)',
+            backgroundColor: 'rgba(251, 191, 36, 0.07)',
+            borderWidth: 1.5,
+            borderDash: [4, 3],
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            pointHoverBackgroundColor: '#fbbf24',
+            yAxisID: 'ySolar'
+        });
 
         chartInstance = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Prix (c€/kWh)',
-                        data: data,
-                        borderColor: '#0ea5e9',
-                        backgroundColor: gradientFill,
-                        borderWidth: 2.5,
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 0,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: '#ffffff',
-                        pointHoverBorderColor: '#0ea5e9',
-                        pointHoverBorderWidth: 2,
-                        yAxisID: 'y'
-                    },
-                    {
-                        label: 'Ensoleillement (W/m²)',
-                        data: solarQH,
-                        borderColor: 'rgba(251, 191, 36, 0.8)',
-                        backgroundColor: 'rgba(251, 191, 36, 0.07)',
-                        borderWidth: 1.5,
-                        borderDash: [4, 3],
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 4,
-                        pointHoverBackgroundColor: '#fbbf24',
-                        yAxisID: 'ySolar'
-                    }
-                ]
-            },
+            data: { labels, datasets },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
+                interaction: { mode: 'index', intersect: false },
                 scales: {
                     x: {
                         grid: { display: false, drawBorder: false },
@@ -893,13 +807,12 @@
                             color: '#64748b',
                             font: { family: "'JetBrains Mono', monospace", size: 10 },
                             maxTicksLimit: 24,
-                            callback: function(val, index) {
-                                return index % 4 === 0 ? labels[index] : '';
-                            }
+                            callback: function(val, index) { return index % 4 === 0 ? labels[index] : ''; }
                         }
                     },
                     y: {
-                        min: Math.min(0, ...data.filter(v => v !== null)),
+                        display: hasPrices,
+                        min: hasPrices ? Math.min(0, ...data.filter(v => v !== null)) : 0,
                         grid: { color: 'rgba(0, 0, 0, 0.05)', drawBorder: false },
                         ticks: {
                             color: '#64748b',
@@ -920,7 +833,7 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        backgroundColor: 'rgba(255,255,255,0.95)',
                         titleColor: '#64748b',
                         titleFont: { family: "'JetBrains Mono', monospace", size: 12 },
                         bodyColor: '#0f172a',
@@ -931,7 +844,7 @@
                         displayColors: true,
                         callbacks: {
                             label: (context) => {
-                                if (context.datasetIndex === 0) return ` ${context.parsed.y.toFixed(2)} c€/kWh`;
+                                if (context.datasetIndex === 0 && hasPrices) return ` ${context.parsed.y.toFixed(2)} c€/kWh`;
                                 return ` ${Math.round(context.parsed.y)} W/m²`;
                             }
                         }
@@ -942,14 +855,12 @@
                 id: 'crosshairLine',
                 afterDraw: (chart) => {
                     const xAxis = chart.scales.x;
-                    const yAxis = chart.scales.y;
+                    const yAxis = chart.scales.y || chart.scales.ySolar;
                     const idx = (hoveredIdx !== null) ? hoveredIdx : (isToday(viewDate) ? currentIdx : null);
                     if (idx === null) return;
-
                     if (idx < xAxis.min || idx > xAxis.max) return;
                     const x = xAxis.getPixelForValue(idx);
                     const isHovered = hoveredIdx !== null;
-
                     ctx.save();
                     ctx.beginPath();
                     ctx.setLineDash([4, 4]);
@@ -958,7 +869,6 @@
                     ctx.lineWidth = isHovered ? 2 : 1.5;
                     ctx.strokeStyle = isHovered ? 'rgba(14, 165, 233, 0.7)' : 'rgba(0, 0, 0, 0.2)';
                     ctx.stroke();
-
                     ctx.beginPath();
                     ctx.arc(x, yAxis.bottom, 4, 0, 2 * Math.PI);
                     ctx.fillStyle = '#0ea5e9';
@@ -968,31 +878,27 @@
             }]
         });
 
-        // Ligne suit la souris
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             const xPos = e.clientX - rect.left;
             const xAxis = chartInstance.scales.x;
-            const raw = xAxis.getValueForPixel(xPos);
-            hoveredIdx = Math.max(0, Math.min(95, Math.round(raw)));
+            hoveredIdx = Math.max(0, Math.min(95, Math.round(xAxis.getValueForPixel(xPos))));
             chartInstance.draw();
         });
         canvas.addEventListener('mouseleave', () => {
-            hoveredIdx = selectedIdx; // garde la sélection cliquée, sinon null
+            hoveredIdx = selectedIdx;
             chartInstance.draw();
         });
     }
 
-    /**
-     * INITIALISATION
-     */
+    // ─── Init ──────────────────────────────────────────────────────────────────
     window.onload = () => {
+        applyTranslations();
         updateClock();
         updateDaySelector();
         setInterval(updateClock, 1000);
         loadDayData();
     };
-
 </script>
 </body>
 </html>
