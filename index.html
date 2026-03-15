@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BE Energy | Dashboard Pro</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+" crossorigin="anonymous">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -174,14 +174,17 @@
 
         .chart-container { height: 400px; position: relative; width: 100%; }
 
+        .strip-section { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+
         .strip-label {
             font-size: 0.7rem; font-family: var(--font-mono);
             color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 4px;
+            letter-spacing: 0.06em; margin-bottom: 6px;
+            display: flex; align-items: center; gap: 0.35rem;
         }
 
-        .heatmap-strip { display: flex; gap: 3px; margin-bottom: 4px; overflow: hidden; }
-        .solar-strip { display: flex; gap: 3px; margin-bottom: 2rem; overflow: hidden; }
+        .heatmap-strip { display: flex; gap: 3px; overflow: hidden; }
+        .solar-strip { display: flex; gap: 3px; overflow: hidden; }
 
         .weather-bar {
             display: flex; align-items: center; gap: 1.5rem;
@@ -275,6 +278,100 @@
         }
 
         @media (max-width: 480px) { .kpi-grid { grid-template-columns: 1fr; } }
+
+        /* Engie config panel */
+        .engie-config {
+            display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1.1rem;
+            background: var(--surface-color);
+            border: 1px solid rgba(243, 112, 33, 0.3);
+            border-radius: 12px;
+            padding: 0.65rem 1.1rem;
+            margin-bottom: 2rem;
+            font-size: 0.8rem;
+        }
+
+        .engie-logo {
+            font-weight: 700; font-size: 0.92rem; letter-spacing: -0.02em;
+            color: #f37021; white-space: nowrap;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+
+        .engie-divider {
+            width: 1px; height: 20px;
+            background: rgba(243, 112, 33, 0.25);
+            flex-shrink: 0;
+        }
+
+        .engie-field {
+            display: flex; align-items: center; gap: 0.35rem;
+            color: var(--text-muted); white-space: nowrap;
+        }
+
+        .engie-field label {
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
+            color: var(--text-main); cursor: help;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .engie-input {
+            width: 62px;
+            background: rgba(243, 112, 33, 0.06);
+            border: 1px solid rgba(243, 112, 33, 0.25);
+            border-radius: 5px;
+            padding: 0.2rem 0.4rem;
+            font-family: var(--font-mono); font-size: 0.78rem;
+            color: var(--text-main); text-align: right; outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .engie-input:focus { border-color: #f37021; background: rgba(243, 112, 33, 0.1); }
+
+        .engie-formula {
+            font-size: 0.7rem; color: var(--text-muted); font-style: italic;
+            font-family: var(--font-mono); white-space: nowrap;
+        }
+
+        .engie-total {
+            margin-left: auto; font-family: var(--font-mono); font-weight: 700;
+            font-size: 0.88rem; color: #f37021; white-space: nowrap;
+        }
+
+        .engie-tooltip {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 15px; height: 15px;
+            background: rgba(243, 112, 33, 0.12);
+            border: 1px solid rgba(243, 112, 33, 0.3);
+            border-radius: 50%;
+            font-size: 0.6rem; font-weight: 700; color: #f37021;
+            cursor: help; flex-shrink: 0;
+        }
+
+        /* Chart legend */
+        .chart-legend {
+            display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .legend-item {
+            display: flex; align-items: center; gap: 0.4rem;
+            font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);
+        }
+
+        .legend-line {
+            width: 24px; height: 2px; border-radius: 1px; flex-shrink: 0;
+        }
+
+        .legend-line.solid { background: #0ea5e9; }
+        .legend-line.dashed-orange {
+            background: linear-gradient(to right, #f37021 50%, transparent 50%);
+            background-size: 6px 2px;
+        }
+        .legend-line.dashed-yellow {
+            background: linear-gradient(to right, rgba(251,191,36,0.9) 50%, transparent 50%);
+            background-size: 6px 2px;
+        }
     </style>
 </head>
 <body>
@@ -359,33 +456,67 @@
         </div>
     </div>
 
+    <!-- Engie Dynamic config -->
+    <div class="engie-config" id="engie-config">
+        <span class="engie-logo"><i class="bi bi-lightning-charge-fill"></i> Engie Dynamic</span>
+        <div class="engie-divider"></div>
+        <span class="engie-field">
+            <label title="Facteur de conversion €/MWh → c€/kWh. B ≈ 0.1 en conditions normales (inclut pertes réseau ~5 %).">B</label>
+            <span class="engie-tooltip" title="Facteur de conversion €/MWh → c€/kWh. B ≈ 0.1 en conditions normales (inclut pertes réseau ~5 %).">?</span>
+            <input class="engie-input" id="engie-b" type="number" step="0.0001" value="0.1039" min="0.05" max="0.2" onchange="updateEngieChart()">
+        </span>
+        <span class="engie-field">
+            <label title="Frais Engie fixes : gestion des volumes, transactions EPEX, marge fournisseur.">A</label>
+            <span class="engie-tooltip" title="Frais Engie fixes : gestion des volumes, transactions EPEX, marge fournisseur (c€/kWh HTVA).">?</span>
+            <input class="engie-input" id="engie-a" type="number" step="0.0001" value="0.2" min="0" max="5" onchange="updateEngieChart()">
+            <span style="font-size:0.72rem">c€/kWh</span>
+        </span>
+        <span class="engie-field">
+            <label>TVA</label>
+            <input class="engie-input" id="engie-vat" type="number" step="0.1" value="6" min="0" max="30" onchange="updateEngieChart()">
+            <span style="font-size:0.72rem">%</span>
+        </span>
+        <span class="engie-formula">Formule : (B × eSpot_15 + A) × (1 + TVA)</span>
+        <span style="font-size:0.68rem;color:var(--text-muted);font-style:italic;white-space:nowrap" title="A est révisé chaque mois pour les nouveaux contrats. Consultez la fiche tarifaire officielle pour la valeur exacte de votre contrat.">
+            <i class="bi bi-info-circle"></i> A variable · <a href="https://www.engie.be/fr/energie/electricite-gaz/prix-conditions/archive-fiches-de-prix/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">fiche tarifaire engie.be</a>
+        </span>
+        <span class="engie-total" id="engie-current-total">-- c€/kWh</span>
+    </div>
+
     <!-- Chart (always visible) -->
     <div class="card chart-section">
         <div class="chart-header">
             <div class="section-title">
-                <i class="bi bi-graph-up"></i> <span data-i18n="chartTitle">Profile Curve (96 Quarter-hours)</span>
+                <i class="bi bi-graph-up"></i> <span data-i18n="chartTitle">EPEX SPOT — Prix horaires</span>
             </div>
             <div class="kpi-unit" id="chart-status">Live</div>
         </div>
         <div class="chart-container" style="position:relative;">
             <canvas id="mainChart"></canvas>
-            <div id="chart-nodata" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;color:var(--text-muted);font-size:0.9rem;">
+            <div id="chart-nodata" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;color:var(--text-muted);font-size:0.9rem;">
                 <i class="bi bi-clock-history" style="font-size:2rem;"></i>
                 <span data-i18n="noDataLine1">Prices not yet published</span>
-                <span style="font-size:0.75rem;" data-i18n="noDataLine2">Available after ~13:00</span>
+                <span style="font-size:0.75rem;" data-i18n="noDataLine2">Available after ~13:45</span>
             </div>
+        </div>
+        <div class="chart-legend">
+            <span class="legend-item"><span class="legend-line solid"></span> EPEX SPOT (c€/kWh)</span>
+            <span class="legend-item"><span class="legend-line dashed-orange"></span> Engie Dynamic (estimé, TVAC)</span>
+            <span class="legend-item"><span class="legend-line dashed-yellow"></span> Ensoleillement (W/m²)</span>
         </div>
     </div>
 
     <!-- Price strip -->
-    <div id="price-strip-section">
-        <div class="strip-label"><i class="bi bi-currency-euro"></i> <span data-i18n="stripPrice">Day-Ahead Price (c€/kWh)</span></div>
+    <div class="strip-section" id="price-strip-section">
+        <div class="strip-label"><i class="bi bi-currency-euro"></i> <span data-i18n="stripPrice">Prix Day-Ahead par heure (c€/kWh)</span></div>
         <div class="heatmap-strip" id="heatmap-container"></div>
     </div>
 
     <!-- Solar strip (always visible) -->
-    <div class="strip-label"><i class="bi bi-sun"></i> <span data-i18n="stripSolar">Solar Irradiance — Louvain-la-Neuve (W/m²)</span></div>
-    <div class="solar-strip" id="solar-container"></div>
+    <div class="strip-section">
+        <div class="strip-label"><i class="bi bi-sun"></i> <span data-i18n="stripSolar">Ensoleillement — Louvain-la-Neuve (W/m²)</span></div>
+        <div class="solar-strip" id="solar-container"></div>
+    </div>
 </div>
 
 <script>
@@ -405,10 +536,11 @@
             helpAvg: 'Average of the 24 hourly prices for the day. Allows comparing the overall cost of the day.',
             helpMin: 'Cheapest hour. Ideal for charging an EV or running the washing machine.',
             helpMax: 'Most expensive hour. Avoid heavy appliances if you have a variable-rate contract.',
-            chartTitle: 'Profile Curve (96 Quarter-hours)',
+            chartTitle: 'EPEX SPOT — Hourly Prices',
             noDataLine1: 'Prices not yet published',
-            noDataLine2: 'Available after ~13:00',
-            stripPrice: 'Day-Ahead Price (c€/kWh)',
+            noDataLine2: 'Available after ~13:45',
+            tableTitle: 'EPEX SPOT — Hourly prices (c€/kWh)',
+            stripPrice: 'Day-Ahead hourly prices (c€/kWh)',
             stripSolar: 'Solar Irradiance — Louvain-la-Neuve (W/m²)',
             statusConnecting: 'Connecting to API...',
             statusLive: 'API Live',
@@ -438,10 +570,11 @@
             helpAvg: "Moyenne des 24 prix horaires de la journée. Permet de comparer le coût global du jour.",
             helpMin: "Heure la moins chère. Idéal pour recharger un véhicule électrique ou faire tourner le lave-linge.",
             helpMax: "Heure la plus chère. À éviter pour les gros appareils si vous avez un contrat à prix variable.",
-            chartTitle: "Courbe de profil (96 Quarts d'heure)",
+            chartTitle: 'EPEX SPOT — Prix horaires',
             noDataLine1: 'Prix non encore publiés',
-            noDataLine2: 'Disponibles après ~13h00',
-            stripPrice: 'Prix Day-Ahead (c€/kWh)',
+            noDataLine2: 'Disponibles après ~13h45',
+            tableTitle: 'EPEX SPOT — Prix horaires (c€/kWh)',
+            stripPrice: 'Prix Day-Ahead par heure (c€/kWh)',
             stripSolar: 'Ensoleillement — Louvain-la-Neuve (W/m²)',
             statusConnecting: 'Connexion API...',
             statusLive: 'API Live',
@@ -562,12 +695,27 @@
         const tmin = d.temperature_2m_min?.[0]?.toFixed(1) ?? '--';
         const precip = d.precipitation_sum?.[0]?.toFixed(1) ?? '--';
         const wind = d.windspeed_10m_max?.[0]?.toFixed(0) ?? '--';
-        document.getElementById('weather-content').innerHTML = `
-            <span class="weather-item"><i class="bi ${icon}" style="font-size:1rem"></i> <strong>${label}</strong></span>
-            <span class="weather-item"><i class="bi bi-thermometer-half"></i> <strong>${tmin}° / ${tmax}°C</strong></span>
-            <span class="weather-item"><i class="bi bi-droplet"></i> <strong>${precip} mm</strong></span>
-            <span class="weather-item"><i class="bi bi-wind"></i> <strong>${wind} km/h</strong></span>
-        `;
+        const container = document.getElementById('weather-content');
+        container.textContent = '';
+        const items = [
+            { iconClass: icon, text: label, iconStyle: 'font-size:1rem' },
+            { iconClass: 'bi-thermometer-half', text: `${tmin}° / ${tmax}°C` },
+            { iconClass: 'bi-droplet', text: `${precip} mm` },
+            { iconClass: 'bi-wind', text: `${wind} km/h` },
+        ];
+        items.forEach(({ iconClass, text, iconStyle }) => {
+            const span = document.createElement('span');
+            span.className = 'weather-item';
+            const i = document.createElement('i');
+            i.className = `bi ${iconClass}`;
+            if (iconStyle) i.style.cssText = iconStyle;
+            span.appendChild(i);
+            span.appendChild(document.createTextNode(' '));
+            const strong = document.createElement('strong');
+            strong.textContent = text;
+            span.appendChild(strong);
+            container.appendChild(span);
+        });
     }
 
     async function fetchWeather() {
@@ -616,15 +764,54 @@
             div.className = cls;
             div.style.backgroundColor = `rgba(251, 191, 36, ${alpha})`;
             div.title = `${h.toString().padStart(2,'0')}:00 — ${Math.round(val)} W/m²`;
-            div.innerHTML = val > 0
-                ? `<span class="cell-hour">${h.toString().padStart(2,'0')}h</span><span class="cell-val">${Math.round(val)}</span>`
-                : `<span class="cell-hour">${h.toString().padStart(2,'0')}h</span>`;
+            const cellHourS = document.createElement('span');
+            cellHourS.className = 'cell-hour';
+            cellHourS.textContent = `${h.toString().padStart(2,'0')}h`;
+            div.appendChild(cellHourS);
+            if (val > 0) {
+                const cellValS = document.createElement('span');
+                cellValS.className = 'cell-val';
+                cellValS.textContent = Math.round(val);
+                div.appendChild(cellValS);
+            }
             div.style.cursor = 'pointer';
             div.addEventListener('mouseenter', () => { hoveredIdx = h * 4; if (chartInstance) chartInstance.draw(); });
             div.addEventListener('mouseleave', () => { hoveredIdx = selectedIdx; if (chartInstance) chartInstance.draw(); });
             div.addEventListener('click', () => { selectedIdx = h * 4; hoveredIdx = selectedIdx; renderSolarStrip(); if (chartInstance) chartInstance.draw(); });
             container.appendChild(div);
         });
+    }
+
+    // ─── Engie Impact ──────────────────────────────────────────────────────────
+    function getEngieParams() {
+        const B   = parseFloat(document.getElementById('engie-b').value)   || 0.1;
+        const A   = parseFloat(document.getElementById('engie-a').value)   || 0.2;
+        const vat = parseFloat(document.getElementById('engie-vat').value) || 6;
+        return { B, A, vat };
+    }
+
+    // epexCentKwh = eSpot already converted to c€/kWh (= 0.1 × eSpot_€/MWh)
+    // Engie formula: (B × eSpot_€/MWh + A) × (1 + VAT/100)
+    //              = (B × epexCentKwh / 0.1 + A) × (1 + VAT/100)
+    //              = (B × 10 × epexCentKwh + A) × (1 + VAT/100)
+    function epexToEngie(epexCentKwh) {
+        const { B, A, vat } = getEngieParams();
+        const eSpotMWh = epexCentKwh * 10; // convert back to €/MWh
+        return parseFloat(((B * eSpotMWh + A) * (1 + vat / 100)).toFixed(3));
+    }
+
+    function updateEngieChart() {
+        // Re-render chart with updated Engie line
+        if (chartInstance) {
+            const validData = currentPrices.filter(d => d !== null && !isNaN(d));
+            renderChart(validData.length === 0 ? [] : currentPrices, getCurrentQuarterIndex());
+        }
+        // Update current total display
+        const currentIdx = getCurrentQuarterIndex();
+        if (currentPrices[currentIdx] != null) {
+            const total = epexToEngie(currentPrices[currentIdx]);
+            document.getElementById('engie-current-total').textContent = `Prix actuel ≈ ${total.toFixed(2)} c€/kWh`;
+        }
     }
 
     // ─── Prices ────────────────────────────────────────────────────────────────
@@ -651,16 +838,20 @@
 
             if (!data) throw new Error('All API endpoints unreachable');
 
-            if (data.price && data.price.length >= 24) {
+            // energy-charts.info returns prices in EUR/MWh under "price" key
+            const rawPrices = data.price || data.prices || data.data;
+            if (rawPrices && rawPrices.length >= 24) {
                 const quarterPrices = [];
-                data.price.slice(0, 24).forEach(p => {
+                rawPrices.slice(0, 24).forEach(p => {
                     const v = parseFloat((p / 10).toFixed(2));
                     quarterPrices.push(v, v, v, v);
                 });
                 currentPrices = quarterPrices;
                 statusEl.innerHTML = `<i class="bi bi-cloud-check text-success"></i> <span style="color:var(--success)">${t('statusLive')}</span>`;
                 refreshUI();
+                updateEngieChart();
             } else {
+                console.warn('API response:', JSON.stringify(data).slice(0, 300));
                 throw new Error('Unexpected response format or future data unavailable');
             }
         } catch (error) {
@@ -724,7 +915,7 @@
         const currentHour = new Date().getHours();
 
         for (let h = 0; h < 24; h++) {
-            const hourlyAvg = (data[h*4]||0 + data[h*4+1]||0 + data[h*4+2]||0 + data[h*4+3]||0) / 4;
+            const hourlyAvg = data[h * 4] ?? 0;
             const div = document.createElement('div');
             const selectedHourP = selectedIdx !== null ? Math.floor(selectedIdx / 4) : null;
             let cls = 'heatmap-cell';
@@ -733,7 +924,14 @@
             div.className = cls;
             div.style.backgroundColor = getHeatmapColor(hourlyAvg, min, max);
             div.title = `${h.toString().padStart(2,'0')}:00 — ${hourlyAvg.toFixed(2)} c€/kWh`;
-            div.innerHTML = `<span class="cell-hour">${h.toString().padStart(2,'0')}h</span><span class="cell-val">${hourlyAvg.toFixed(1)}</span>`;
+            const cellHourH = document.createElement('span');
+            cellHourH.className = 'cell-hour';
+            cellHourH.textContent = `${h.toString().padStart(2,'0')}h`;
+            const cellValH = document.createElement('span');
+            cellValH.className = 'cell-val';
+            cellValH.textContent = hourlyAvg.toFixed(1);
+            div.appendChild(cellHourH);
+            div.appendChild(cellValH);
             div.style.cursor = 'pointer';
             div.addEventListener('mouseenter', () => { hoveredIdx = h * 4; if (chartInstance) chartInstance.draw(); });
             div.addEventListener('mouseleave', () => { hoveredIdx = selectedIdx; if (chartInstance) chartInstance.draw(); });
@@ -745,51 +943,66 @@
     function renderChart(data, currentIdx) {
         const canvas = document.getElementById('mainChart');
         const ctx = canvas.getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        // Use 24 hourly data points
+        const labels = Array.from({length: 24}, (_, h) => h.toString().padStart(2,'0') + 'h');
+        const hasPrices = data.length > 0;
+        const hourlyPrices = Array.from({length: 24}, (_, h) => hasPrices ? (data[h * 4] ?? null) : null);
 
         const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
         gradientFill.addColorStop(0, 'rgba(14, 165, 233, 0.3)');
         gradientFill.addColorStop(1, 'rgba(14, 165, 233, 0.0)');
 
-        const labels = Array.from({length: 96}, (_, i) => {
-            const h = Math.floor(i / 4).toString().padStart(2, '0');
-            const m = ((i % 4) * 15).toString().padStart(2, '0');
-            return `${h}:${m}`;
-        });
+        const validPrices = hourlyPrices.filter(v => v !== null);
+        const minP = validPrices.length ? Math.min(...validPrices) : 0;
 
-        if (chartInstance) chartInstance.destroy();
+        const engieHourly = hasPrices ? hourlyPrices.map(v => v !== null ? epexToEngie(v) : null) : [];
 
-        const solarQH = Array.from({length: 96}, (_, i) => solarData[Math.floor(i / 4)] ?? 0);
-        const hasPrices = data.length > 0;
         const datasets = [];
+        if (hasPrices) {
+            datasets.push({
+                label: t('datasetPrice'),
+                data: hourlyPrices,
+                borderColor: '#0ea5e9',
+                backgroundColor: gradientFill,
+                borderWidth: 2.5,
+                fill: true,
+                tension: 0.3,
+                pointRadius: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#0ea5e9',
+                pointBorderWidth: 2,
+                pointHoverRadius: 6,
+                yAxisID: 'y'
+            });
 
-        if (hasPrices) datasets.push({
-            label: t('datasetPrice'),
-            data: data,
-            borderColor: '#0ea5e9',
-            backgroundColor: gradientFill,
-            borderWidth: 2.5,
-            fill: true,
-            tension: 0.3,
-            pointRadius: 0,
-            pointHoverRadius: 6,
-            pointHoverBackgroundColor: '#ffffff',
-            pointHoverBorderColor: '#0ea5e9',
-            pointHoverBorderWidth: 2,
-            yAxisID: 'y'
-        });
+            datasets.push({
+                label: 'Engie Impact (estimé)',
+                data: engieHourly,
+                borderColor: '#f37021',
+                backgroundColor: 'rgba(243, 112, 33, 0.0)',
+                borderWidth: 2,
+                borderDash: [6, 3],
+                fill: false,
+                tension: 0.3,
+                pointRadius: 0,
+                pointHoverRadius: 5,
+                yAxisID: 'y'
+            });
+        }
 
         datasets.push({
             label: t('datasetSolar'),
-            data: solarQH,
-            borderColor: 'rgba(251, 191, 36, 0.8)',
-            backgroundColor: 'rgba(251, 191, 36, 0.07)',
-            borderWidth: 1.5,
-            borderDash: [4, 3],
+            data: solarData,
+            borderColor: 'rgba(251, 191, 36, 0.9)',
+            backgroundColor: 'rgba(251, 191, 36, 0.08)',
+            borderWidth: 2,
+            borderDash: [5, 3],
             fill: true,
             tension: 0.4,
             pointRadius: 0,
             pointHoverRadius: 4,
-            pointHoverBackgroundColor: '#fbbf24',
             yAxisID: 'ySolar'
         });
 
@@ -802,38 +1015,38 @@
                 interaction: { mode: 'index', intersect: false },
                 scales: {
                     x: {
-                        grid: { display: false, drawBorder: false },
+                        grid: { display: false },
                         ticks: {
                             color: '#64748b',
-                            font: { family: "'JetBrains Mono', monospace", size: 10 },
-                            maxTicksLimit: 24,
-                            callback: function(val, index) { return index % 4 === 0 ? labels[index] : ''; }
+                            font: { family: "'JetBrains Mono', monospace", size: 10 }
                         }
                     },
                     y: {
                         display: hasPrices,
-                        min: hasPrices ? Math.min(0, ...data.filter(v => v !== null)) : 0,
-                        grid: { color: 'rgba(0, 0, 0, 0.05)', drawBorder: false },
+                        min: hasPrices ? Math.min(0, minP) : 0,
+                        suggestedMin: hasPrices ? Math.min(0, minP) : 0,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
                         ticks: {
                             color: '#64748b',
                             font: { family: "'JetBrains Mono', monospace", size: 11 },
-                            callback: (value) => value + ' c€'
+                            callback: v => v + ' c€'
                         }
                     },
                     ySolar: {
                         position: 'right',
                         grid: { display: false },
+                        min: 0,
                         ticks: {
                             color: '#d97706',
                             font: { family: "'JetBrains Mono', monospace", size: 10 },
-                            callback: (value) => value + ' W'
+                            callback: v => v + ' W'
                         }
                     }
                 },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(255,255,255,0.95)',
+                        backgroundColor: 'rgba(255,255,255,0.97)',
                         titleColor: '#64748b',
                         titleFont: { family: "'JetBrains Mono', monospace", size: 12 },
                         bodyColor: '#0f172a',
@@ -844,45 +1057,25 @@
                         displayColors: true,
                         callbacks: {
                             label: (context) => {
-                                if (context.datasetIndex === 0 && hasPrices) return ` ${context.parsed.y.toFixed(2)} c€/kWh`;
-                                return ` ${Math.round(context.parsed.y)} W/m²`;
+                                if (context.dataset.yAxisID === 'ySolar') return ` ${Math.round(context.parsed.y)} W/m²`;
+                                const v = context.parsed.y;
+                                if (context.dataset.label && context.dataset.label.startsWith('Engie')) {
+                                    return ` Engie Dynamic (TVAC) : ${v.toFixed(3)} c€/kWh`;
+                                }
+                                return ` EPEX : ${v.toFixed(2)} c€/kWh  (${(v*10).toFixed(1)} €/MWh)`;
                             }
                         }
                     }
                 }
-            },
-            plugins: [{
-                id: 'crosshairLine',
-                afterDraw: (chart) => {
-                    const xAxis = chart.scales.x;
-                    const yAxis = chart.scales.y || chart.scales.ySolar;
-                    const idx = (hoveredIdx !== null) ? hoveredIdx : (isToday(viewDate) ? currentIdx : null);
-                    if (idx === null) return;
-                    if (idx < xAxis.min || idx > xAxis.max) return;
-                    const x = xAxis.getPixelForValue(idx);
-                    const isHovered = hoveredIdx !== null;
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.setLineDash([4, 4]);
-                    ctx.moveTo(x, yAxis.top);
-                    ctx.lineTo(x, yAxis.bottom);
-                    ctx.lineWidth = isHovered ? 2 : 1.5;
-                    ctx.strokeStyle = isHovered ? 'rgba(14, 165, 233, 0.7)' : 'rgba(0, 0, 0, 0.2)';
-                    ctx.stroke();
-                    ctx.beginPath();
-                    ctx.arc(x, yAxis.bottom, 4, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#0ea5e9';
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }]
+            }
         });
 
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             const xPos = e.clientX - rect.left;
             const xAxis = chartInstance.scales.x;
-            hoveredIdx = Math.max(0, Math.min(95, Math.round(xAxis.getValueForPixel(xPos))));
+            const hour = Math.max(0, Math.min(23, Math.round(xAxis.getValueForPixel(xPos))));
+            hoveredIdx = hour * 4;
             chartInstance.draw();
         });
         canvas.addEventListener('mouseleave', () => {
@@ -890,6 +1083,38 @@
             chartInstance.draw();
         });
     }
+
+    // Crosshair plugin — registered once globally
+    Chart.register({
+        id: 'crosshairLine',
+        afterDraw: (chart) => {
+            const xAxis = chart.scales.x;
+            const yAxis = chart.scales.y || chart.scales.ySolar;
+            if (!xAxis || !yAxis) return;
+            const currentHour = Math.floor(getCurrentQuarterIndex() / 4);
+            const hour = hoveredIdx !== null
+                ? Math.floor(hoveredIdx / 4)
+                : (isToday(viewDate) ? currentHour : null);
+            if (hour === null) return;
+            const x = xAxis.getPixelForValue(hour);
+            const isHovered = hoveredIdx !== null;
+            const c = chart.ctx;
+            c.save();
+            c.beginPath();
+            c.setLineDash([4, 4]);
+            c.moveTo(x, yAxis.top);
+            c.lineTo(x, yAxis.bottom);
+            c.lineWidth = isHovered ? 2 : 1.5;
+            c.strokeStyle = isHovered ? 'rgba(14, 165, 233, 0.8)' : 'rgba(0,0,0,0.25)';
+            c.stroke();
+            c.setLineDash([]);
+            c.beginPath();
+            c.arc(x, yAxis.bottom, 4, 0, 2 * Math.PI);
+            c.fillStyle = '#0ea5e9';
+            c.fill();
+            c.restore();
+        }
+    });
 
     // ─── Init ──────────────────────────────────────────────────────────────────
     window.onload = () => {
